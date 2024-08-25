@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,7 @@ interface TabsDemoProps {
   addAdress: () => void;
   removeAddress: (index: number) => void;
   handleinvitedUserChange: (index: number, value: string) => void;
+  shareableLink: string | null;
 }
 
 export function TabsDemo({
@@ -16,7 +17,21 @@ export function TabsDemo({
   addAdress,
   removeAddress,
   handleinvitedUserChange,
+  shareableLink,
 }: TabsDemoProps) {
+  const handleCopyLink = () => {
+    if (shareableLink) {
+      navigator.clipboard.writeText(shareableLink).then(
+        () => {
+          alert("Link copied to clipboard!");
+        },
+        (err) => {
+          console.error("Failed to copy link:", err);
+        }
+      );
+    }
+  };
+
   return (
     <Tabs defaultValue="public" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
@@ -30,8 +45,17 @@ export function TabsDemo({
             Share this link with your community to allow them to vote:
           </p>
           <div className="flex items-center gap-2">
-            <Input value="https://example.com/vote" readOnly />
-            <Button variant="outline">Copy Link</Button>
+            <Input
+              value={shareableLink || "Link will be generated here..."}
+              readOnly
+            />
+            <Button
+              variant="outline"
+              onClick={handleCopyLink}
+              disabled={!shareableLink}
+            >
+              Copy Link
+            </Button>
           </div>
         </div>
       </TabsContent>
