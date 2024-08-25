@@ -11,7 +11,12 @@ interface Event {
   invitedUsers: string[];
   startDate: string;
   endDate: string;
-  options: any[];
+  options: Array<{
+    id: number;
+    option: string;
+    voteCount: number;
+    votedUsers: string[];
+  }>;
   isCompleted: boolean;
 }
 
@@ -56,14 +61,16 @@ const ActiveEvent = () => {
             <CardComponent
               key={event.id}
               id={event.id}
-              description="Decentralized Autonomous Organization (DAO) Proposal" // Example description
+              description="Decentralized Autonomous Organization (DAO) Proposal"
               title={event.title}
               categories={event.invitedUsers.map(
                 (user) => `${user.slice(0, 6)}...${user.slice(-4)}`
-              )} // Shortened wallet addresses
-              participants={event.invitedUsers.length.toString()} // Number of participants as a string
-              date={new Date(event.startDate).toLocaleDateString()}
+              )}
+              participants={event.invitedUsers.length.toString()}
+              startDate={new Date(event.startDate).toLocaleDateString()}
+              endDate={new Date(event.endDate).toLocaleDateString()}
               entity="organizer"
+              options={event.options}
             />
           ))}
         </div>

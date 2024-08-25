@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import WalletContextProvider from "@/contexts/WalletContextProvider";
 import { WalletProvider } from "@/contexts/WalletContext";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
             </WalletProvider>
           </WalletContextProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,15 +1,17 @@
-"use client";
-import Image from "next/image";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
-
-import { Calendar, Check, X } from "lucide-react";
-
-import { Star, BadgeCheck } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Calendar, Star, UsersIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import VotingDialog from "./VoteDialog";
 
 interface CardProps {
   id: Number;
@@ -17,8 +19,15 @@ interface CardProps {
   title: string;
   categories: string[];
   participants: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   entity: string;
+  options: Array<{
+    id: number;
+    option: string;
+    voteCount: number;
+    votedUsers: string[];
+  }>;
 }
 
 const truncateString = (str: string, maxLength: number): string => {
@@ -34,54 +43,69 @@ export const CardComponent: React.FC<CardProps> = ({
   title,
   categories,
   participants,
-  date,
+  startDate,
+  endDate,
   entity,
+  options,
 }) => {
   const router = useRouter();
+  const [isVotingDialogOpen, setVotingDialogOpen] = useState(false);
+
   const handleButtonClick = () => {
     if (entity === "organizer") {
       router.push(`/organizer/${id}`);
+    } else if (entity === "voter") {
+      setVotingDialogOpen(true);
     }
   };
 
-  console.log(title, "title");
+  const closeVotingDialog = () => {
+    setVotingDialogOpen(false);
+  };
+
   return (
     <>
-      <Card className="bg-[#141416]">
-        <CardContent className=" flex flex-col items-start justify-between gap-4 p-6">
-          <div>
-            <h3 className="text-lg font-semibold">{title}</h3>
-            <p className="text-muted-foreground">{description}</p>
-          </div>
-
-          <div className="mt-2 flex flex-wrap gap-2">
+      <Card className="flex-shrink-0 w-72 bg-transparent border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-white">
+            {title}
+          </CardTitle>
+          <p className="text-sm text-gray-400">{description}</p>
+        </CardHeader>
+        <CardContent>
+          <div className="mt-1 mb-2 flex flex-wrap gap-2">
             {categories.map((category) => (
               <Badge key={category} variant="secondary">
                 {truncateString(category, 7)}
               </Badge>
             ))}
           </div>
-
-          <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-muted-foreground" />
-            <span className="text-muted-foreground ">{date}</span>
+          <div className="flex items-center text-gray-300 mb-2">
+            <Calendar className="w-4 h-4 mr-2" />
+            <span className="text-sm">{startDate}</span>
           </div>
-
-          <Separator />
-
-          <div className="mt-4 flex items-center justify-between w-full">
-            <div className="text-gray-400 text-sm items-center">
-              <Star className="inline-block mr-1" />
-              {participants} Participants
-            </div>
-            {entity == "voter" ? (
-              <Button>Participate</Button>
-            ) : (
-              <Button onClick={handleButtonClick}>Results</Button>
-            )}
+          <div className="flex items-center text-gray-300">
+            <UsersIcon className="w-4 h-4 mr-2" />
+            <span className="text-sm">{participants} Participants</span>
           </div>
         </CardContent>
+        <CardFooter>
+          <Button className="w-full" onClick={handleButtonClick}>
+            {entity === "voter" ? "Participate" : "Results"}
+          </Button>
+        </CardFooter>
       </Card>
+      {entity === "voter" && (
+        <VotingDialog
+          eventId={id as number}
+          isOpen={isVotingDialogOpen}
+          onClose={closeVotingDialog}
+          options={options}
+          startDate={startDate}
+          endDate={endDate}
+          description={description}
+        />
+      )}
     </>
   );
 };
