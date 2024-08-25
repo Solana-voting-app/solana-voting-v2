@@ -14,23 +14,24 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 router.post("/signin", async (req, res) => {
-  //   const { publicKey, signature } = req.body;
-  // const publicKey = "9kKu8kyNP3NrhzmAcQpqVx8wsnFB2F7n1sva5BJWb7Vc";
-  const publicKey = "0x14354";
-  const signature = "";
+  const { publicKey, signature } = req.body;
+  console.log(publicKey, signature);
+
+  // const publicKey = "0x14354";
+  // const signature = "";
   const message = new TextEncoder().encode("Sign into VoteChain");
 
-  //   const result = nacl.sign.detached.verify(
-  //     message,
-  //     new Uint8Array(signature.data),
-  //     new PublicKey(publicKey).toBytes()
-  //   );
+  const result = nacl.sign.detached.verify(
+    message,
+    new Uint8Array(signature.data),
+    new PublicKey(publicKey).toBytes()
+  );
 
-  //   if (!result) {
-  //     return res.status(411).json({
-  //       message: "Incorrect signature",
-  //     });
-  //   }
+  if (!result) {
+    return res.status(411).json({
+      message: "Incorrect signature",
+    });
+  }
 
   const existingUser = await prisma.user.findFirst({
     where: {
