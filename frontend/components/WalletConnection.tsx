@@ -44,27 +44,27 @@ const WalletConnection = () => {
     }
   };
 
-  async function signAndSend() {
-    if (!publicKey) {
-      return;
-    }
-    const message = new TextEncoder().encode("Sign into VoteChain");
-    const signature = await signMessage?.(message);
-    console.log(signature);
-    console.log(publicKey);
-    const response = await axios.post(`${BACKEND_URL}/v1/user/signin`, {
-      signature,
-      publicKey: publicKey?.toString(),
-    });
-
-    console.log("token", response.data.token);
-
-    localStorage.setItem("token", response.data.token);
-  }
-
   useEffect(() => {
+    async function signAndSend() {
+      if (!publicKey) {
+        return;
+      }
+      const message = new TextEncoder().encode("Sign into VoteChain");
+      const signature = await signMessage?.(message);
+      console.log(signature);
+      console.log(publicKey);
+      const response = await axios.post(`${BACKEND_URL}/v1/user/signin`, {
+        signature,
+        publicKey: publicKey?.toString(),
+      });
+
+      console.log("token", response.data.token);
+
+      localStorage.setItem("token", response.data.token);
+    }
+
     signAndSend();
-  }, [publicKey]);
+  }, [publicKey, signMessage]);
 
   const handleDisconnect = async () => {
     disconnectWallet();
