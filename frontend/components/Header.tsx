@@ -14,21 +14,21 @@ const Header = () => {
         </Link>
         <nav className="hidden space-x-4 sm:flex">
           <Link
-            href="organizer"
+            href="/organizer"
             className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
             Organizers
           </Link>
           <Link
-            href="voter"
+            href="/voter"
             className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
             Voters
           </Link>
           <Link
-            href="about"
+            href="/about"
             className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted hover:text-foreground"
             prefetch={false}
           >

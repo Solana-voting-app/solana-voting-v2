@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,8 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Check, X } from "lucide-react";
 
 import { Star, BadgeCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface CardProps {
+  id: Number;
   description: string;
   title: string;
   categories: string[];
@@ -25,6 +29,7 @@ const truncateString = (str: string, maxLength: number): string => {
 };
 
 export const CardComponent: React.FC<CardProps> = ({
+  id,
   description,
   title,
   categories,
@@ -32,6 +37,14 @@ export const CardComponent: React.FC<CardProps> = ({
   date,
   entity,
 }) => {
+  const router = useRouter();
+  const handleButtonClick = () => {
+    if (entity === "organizer") {
+      router.push(`/organizer/${id}`);
+    }
+  };
+
+  console.log(title, "title");
   return (
     <>
       <Card className="bg-[#141416]">
@@ -61,7 +74,11 @@ export const CardComponent: React.FC<CardProps> = ({
               <Star className="inline-block mr-1" />
               {participants} Participants
             </div>
-            {entity == "voter" ? <Button>Participate</Button> : null}
+            {entity == "voter" ? (
+              <Button>Participate</Button>
+            ) : (
+              <Button onClick={handleButtonClick}>Results</Button>
+            )}
           </div>
         </CardContent>
       </Card>
