@@ -129,4 +129,58 @@ router.get("/getEvent", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
+router.get(
+  "/activeEvents",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    try {
+      //@ts-ignore
+      const userId: string = req.userId;
+
+      // Fetch all active events created by the user
+      const activeEvents = await prisma.votingEvent.findMany({
+        where: {
+          creatorId: Number(userId),
+          isCompleted: false,
+        },
+        include: {
+          options: true, // Include the options for each event
+        },
+      });
+
+      return res.status(200).json(activeEvents);
+    } catch (error) {
+      console.error("Error fetching active events:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+router.get(
+  "/pastEvents",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    try {
+      //@ts-ignore
+      const userId: string = req.userId;
+
+      // Fetch all active events created by the user
+      const PastEvents = await prisma.votingEvent.findMany({
+        where: {
+          creatorId: Number(userId),
+          isCompleted: true,
+        },
+        include: {
+          options: true, // Include the options for each event
+        },
+      });
+
+      return res.status(200).json(PastEvents);
+    } catch (error) {
+      console.error("Error fetching past events:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
 export default router;

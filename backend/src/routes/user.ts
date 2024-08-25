@@ -27,6 +27,8 @@ router.post("/signin", async (req, res) => {
     new PublicKey(publicKey).toBytes()
   );
 
+  console.log(result);
+
   if (!result) {
     return res.status(411).json({
       message: "Incorrect signature",

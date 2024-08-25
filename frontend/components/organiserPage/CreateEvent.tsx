@@ -24,13 +24,14 @@ const eventSchema = z.object({
 });
 
 const CreateEvent = () => {
-  const [formState, setFormState] = useState({
+  const initialState = {
     title: "",
     startDate: null as Date | null,
     endDate: null as Date | null,
     options: [""],
     invitedUsers: [] as string[],
-  });
+  };
+  const [formState, setFormState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +77,10 @@ const CreateEvent = () => {
     setFormState({ ...formState, invitedUsers: updatedinvitedUsers });
   };
 
+  const resetForm = () => {
+    setFormState(initialState);
+  };
+
   // Handle form submission
   const handleSubmit = async () => {
     setLoading(true);
@@ -102,6 +107,7 @@ const CreateEvent = () => {
       );
 
       console.log("Event created:", response.data);
+      resetForm();
       // Handle successful response (e.g., show success message, redirect)
     } catch (err: any) {
       if (err instanceof z.ZodError) {
