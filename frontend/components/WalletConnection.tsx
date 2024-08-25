@@ -15,6 +15,9 @@ import { Separator } from "@/components/ui/separator";
 import Jazzicon from "react-jazzicon";
 // import Cookies from "js-cookie";
 import { useWalletContext } from "@/contexts/WalletContext";
+import axios from "axios";
+
+import { BACKEND_URL } from "@/utils";
 
 const WalletConnection = () => {
   const {
@@ -30,8 +33,6 @@ const WalletConnection = () => {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  useEffect(() => {}, [publicKey]);
-
   const handleWalletSelect = async (walletName: string) => {
     if (walletName) {
       try {
@@ -43,9 +44,31 @@ const WalletConnection = () => {
     }
   };
 
+  async function signAndSend() {
+    if (!publicKey) {
+      return;
+    }
+    const message = new TextEncoder().encode("Sign into VoteChain");
+    const signature = await signMessage?.(message);
+    console.log(signature);
+    console.log(publicKey);
+    const response = await axios.post(`${BACKEND_URL}/v1/user/signin`, {
+      signature,
+      publicKey: publicKey?.toString(),
+    });
+
+    console.log("token", response.data.token);
+
+    localStorage.setItem("token", response.data.token);
+  }
+
+  useEffect(() => {
+    signAndSend();
+  }, [publicKey]);
+
   const handleDisconnect = async () => {
     disconnectWallet();
-    // Cookies.remove("authToken");
+    localStorage.setItem("token", "asd");
   };
 
   return (

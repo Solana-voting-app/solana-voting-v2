@@ -26,7 +26,10 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useWallet();
 
   // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  // const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  const endpoint =
+    "https://devnet.helius-rpc.com/?api-key=79eba147-fb40-4cb4-93fa-4b810b43b0ab";
 
   //wallets
   const wallets = useMemo(
