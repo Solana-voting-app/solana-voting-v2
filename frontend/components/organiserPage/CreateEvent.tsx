@@ -8,6 +8,7 @@ import { DatePickerDemo } from "./DatePicker";
 import { TabsDemo } from "./Tab";
 import axios from "axios";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 import { BACKEND_URL } from "@/utils";
 
 // Define validation schema using Zod
@@ -34,6 +35,7 @@ const CreateEvent = () => {
   const [formState, setFormState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [shareableLink, setShareableLink] = useState<string | null>(null);
 
   const { title, startDate, endDate, options, invitedUsers } = formState;
 
@@ -61,20 +63,20 @@ const CreateEvent = () => {
     setFormState({ ...formState, options: updatedOptions });
   };
 
-  const addAdress = () => {
+  const addAddress = () => {
     setFormState({ ...formState, invitedUsers: [...invitedUsers, ""] });
   };
 
   const removeAddress = (index: number) => {
-    const updatedinvitedUsers = invitedUsers.filter((_, i) => i !== index);
-    setFormState({ ...formState, invitedUsers: updatedinvitedUsers });
+    const updatedInvitedUsers = invitedUsers.filter((_, i) => i !== index);
+    setFormState({ ...formState, invitedUsers: updatedInvitedUsers });
   };
 
-  const handleinvitedUserChange = (index: number, value: string) => {
-    const updatedinvitedUsers = invitedUsers.map((option, i) =>
-      i === index ? value : option
+  const handleInvitedUserChange = (index: number, value: string) => {
+    const updatedInvitedUsers = invitedUsers.map((address, i) =>
+      i === index ? value : address
     );
-    setFormState({ ...formState, invitedUsers: updatedinvitedUsers });
+    setFormState({ ...formState, invitedUsers: updatedInvitedUsers });
   };
 
   const resetForm = () => {
@@ -107,6 +109,10 @@ const CreateEvent = () => {
       );
 
       console.log("Event created:", response.data);
+
+      const uniqueLink = `http://localhost:3000/vote/${uuidv4()}`;
+      setShareableLink(uniqueLink);
+
       resetForm();
       // Handle successful response (e.g., show success message, redirect)
     } catch (err: any) {
@@ -196,9 +202,10 @@ const CreateEvent = () => {
 
         <TabsDemo
           invitedUsers={invitedUsers}
-          addAdress={addAdress}
+          addAdress={addAddress}
           removeAddress={removeAddress}
-          handleinvitedUserChange={handleinvitedUserChange}
+          handleinvitedUserChange={handleInvitedUserChange}
+          shareableLink={shareableLink}
         />
 
         <Button className="w-full" onClick={handleSubmit} disabled={loading}>
