@@ -35,8 +35,8 @@ export function TabsDemo({
   return (
     <Tabs defaultValue="public" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="public">Public</TabsTrigger>
         <TabsTrigger value="private">Private</TabsTrigger>
+        <TabsTrigger value="public">Public</TabsTrigger>
       </TabsList>
 
       <TabsContent value="public">
