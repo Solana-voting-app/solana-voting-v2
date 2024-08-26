@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import VotingDialog from "./VoteDialog";
 
 interface CardProps {
-  id: Number;
+  id: number;
   description: string;
   title: string;
   categories: string[];
@@ -65,7 +65,7 @@ export const CardComponent: React.FC<CardProps> = ({
 
   return (
     <>
-      <Card className="flex-shrink-0 w-72 bg-transparent border-gray-700">
+      <Card className="card-class flex-shrink-0 w-72 bg-transparent border-gray-700">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-white">
             {title}
@@ -97,7 +97,7 @@ export const CardComponent: React.FC<CardProps> = ({
       </Card>
       {entity === "voter" && (
         <VotingDialog
-          eventId={id as number}
+          eventId={id}
           isOpen={isVotingDialogOpen}
           onClose={closeVotingDialog}
           options={options}

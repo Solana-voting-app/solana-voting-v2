@@ -44,19 +44,17 @@ const ActiveEvent = () => {
     fetchActiveEvents();
   }, []);
 
-  console.log(events, "events");
-
   return (
-    <div className="bg-background rounded-lg shadow-sm border border-input p-6 space-y-4">
-      <div className="space-y-2">
+    <div className="bg-background rounded-lg shadow-sm border border-input space-y-4 px-2">
+      <div className="space-y-2 p-3">
         <h2 className="text-2xl font-bold">Active Voting Events</h2>
         <p className="text-muted-foreground">
           Events that are currently open for voting.
         </p>
       </div>
 
-      <div className="p-8 flex justify-center items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex justify-center items-center w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-h-80 overflow-y-auto">
           {events.map((event) => (
             <CardComponent
               key={event.id}
