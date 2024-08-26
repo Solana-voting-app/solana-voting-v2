@@ -10,10 +10,13 @@ import axios from "axios";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { BACKEND_URL } from "@/utils";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 // Define validation schema using Zod
 const eventSchema = z.object({
   title: z.string().min(1, "Title is required"),
+  description: z.string(),
   startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: "Invalid start date",
   }),
@@ -27,6 +30,7 @@ const eventSchema = z.object({
 const CreateEvent = () => {
   const initialState = {
     title: "",
+    description: "",
     startDate: null as Date | null,
     endDate: null as Date | null,
     options: [""],
@@ -37,7 +41,10 @@ const CreateEvent = () => {
   const [error, setError] = useState<string | null>(null);
   const [shareableLink, setShareableLink] = useState<string | null>(null);
 
-  const { title, startDate, endDate, options, invitedUsers } = formState;
+  const { title, description, startDate, endDate, options, invitedUsers } =
+    formState;
+
+  const { toast } = useToast();
 
   // Handle input changes
   const handleInputChange = (
@@ -82,16 +89,14 @@ const CreateEvent = () => {
   const resetForm = () => {
     setFormState(initialState);
   };
-
-  // Handle form submission
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Validate form data with Zod
       const validatedData = eventSchema.parse({
         title,
+        description,
         startDate: startDate ? startDate.toISOString() : "",
         endDate: endDate ? endDate.toISOString() : "",
         options,
@@ -109,21 +114,39 @@ const CreateEvent = () => {
       );
 
       console.log("Event created:", response.data);
+      toast({
+        title: "Event Created",
+        description: `Your event was successfully created.`,
+        className: "border border-green-500",
+        action: <ToastAction altText="Close">Close</ToastAction>,
+      });
 
       const uniqueLink = `http://localhost:3000/vote/${uuidv4()}`;
       setShareableLink(uniqueLink);
 
       resetForm();
-      // Handle successful response (e.g., show success message, redirect)
     } catch (err: any) {
       if (err instanceof z.ZodError) {
-        // Handle validation errors
-        setError(err.errors[0].message); // Display the first validation error
+        setError(err.errors[0].message);
+        toast({
+          title: "Validation Error",
+          description: err.errors[0].message,
+          className: "border border-red-500",
+          action: <ToastAction altText="Close">Close</ToastAction>,
+        });
       } else {
         setError(
           err?.response?.data?.message ||
             "An error occurred while creating the event."
         );
+        toast({
+          title: "Submission Error",
+          description:
+            err?.response?.data?.message ||
+            "An error occurred while creating the event.",
+          className: "border border-red-500",
+          action: <ToastAction altText="Close">Close</ToastAction>,
+        });
       }
     } finally {
       setLoading(false);
@@ -151,6 +174,16 @@ const CreateEvent = () => {
             value={title}
             onChange={(e) => handleInputChange(e, "title")}
             placeholder="What should we build next?"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="title">Description</Label>
+          <Input
+            id="title"
+            value={description}
+            onChange={(e) => handleInputChange(e, "description")}
+            placeholder="Describe your title"
           />
         </div>
 

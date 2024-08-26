@@ -20,6 +20,7 @@ import { useWalletContext } from "@/contexts/WalletContext";
 interface VotingDialogProps {
   eventId: number;
   isOpen: boolean;
+  title: string;
   startDate: string;
   endDate: string;
   description: string;
@@ -36,6 +37,8 @@ const VotingDialog: React.FC<VotingDialogProps> = ({
   eventId,
   isOpen,
   onClose,
+  title,
+  description,
   startDate,
   endDate,
   options,
@@ -82,10 +85,8 @@ const VotingDialog: React.FC<VotingDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>DAO Proposal Details</DialogTitle>
-          <DialogDescription>
-            Vote on the Decentralized Autonomous Organization (DAO) Proposal
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">

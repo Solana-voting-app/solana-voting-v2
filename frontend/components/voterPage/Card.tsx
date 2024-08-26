@@ -98,6 +98,7 @@ export const CardComponent: React.FC<CardProps> = ({
       {entity === "voter" && (
         <VotingDialog
           eventId={id}
+          title={title}
           isOpen={isVotingDialogOpen}
           onClose={closeVotingDialog}
           options={options}

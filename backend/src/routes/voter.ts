@@ -15,26 +15,29 @@ router.get(
   verifyAddressMiddleware,
   async (req: Request, res: Response) => {
     try {
-      // Extract userId and address from the request
       //@ts-ignore
       const userId: string = req.userId!;
       //@ts-ignore
       const address: string = req.address;
 
-      // Find active events where the user is invited
+      console.log(userId, address);
       const events = await prisma.votingEvent.findMany({
         where: {
           invitedUsers: {
-            has: address, // The user must be invited to the event
+            has: address,
           },
-          isCompleted: false, // The event must still be active
+          endDate: {
+            gt: new Date(),
+          },
         },
         include: {
-          options: true, // Include all voting options
+          options: true,
+        },
+        orderBy: {
+          id: "desc",
         },
       });
 
-      // Return the filtered events
       return res.status(200).json(events);
     } catch (error) {
       console.error("Error fetching active votes:", error);
@@ -54,17 +57,20 @@ router.get(
       const userId: string = req.userId!;
       //@ts-ignore
       const address: string = req.address;
-
-      // Find completed events where the user was invited
       const events = await prisma.votingEvent.findMany({
         where: {
           invitedUsers: {
             has: address,
           },
-          isCompleted: true,
+          endDate: {
+            lt: new Date(),
+          },
         },
         include: {
-          options: true, // Include voting options
+          options: true,
+        },
+        orderBy: {
+          id: "desc",
         },
       });
 
@@ -76,8 +82,9 @@ router.get(
         return {
           eventId: event.id,
           title: event.title,
+          description: event.description,
           options: event.options,
-          hasVoted: hasVoted, // True if user has voted in any option, otherwise false
+          hasVoted: hasVoted,
         };
       });
 

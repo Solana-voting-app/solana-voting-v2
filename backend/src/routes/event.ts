@@ -34,6 +34,7 @@ router.post(
       const newEvent = await prisma.votingEvent.create({
         data: {
           title: parsedData.title,
+          description: parsedData.description,
           startDate: new Date(parsedData.startDate),
           endDate: new Date(parsedData.endDate),
           creatorId: Number(userId),
@@ -136,15 +137,18 @@ router.get(
     try {
       //@ts-ignore
       const userId: string = req.userId;
-
-      // Fetch all active events created by the user
       const activeEvents = await prisma.votingEvent.findMany({
         where: {
           creatorId: Number(userId),
-          isCompleted: false,
+          endDate: {
+            gte: new Date(),
+          },
         },
         include: {
-          options: true, // Include the options for each event
+          options: true,
+        },
+        orderBy: {
+          id: "desc",
         },
       });
 
@@ -163,19 +167,22 @@ router.get(
     try {
       //@ts-ignore
       const userId: string = req.userId;
-
-      // Fetch all active events created by the user
-      const PastEvents = await prisma.votingEvent.findMany({
+      const pastEvents = await prisma.votingEvent.findMany({
         where: {
           creatorId: Number(userId),
-          isCompleted: true,
+          endDate: {
+            lt: new Date(),
+          },
         },
         include: {
-          options: true, // Include the options for each event
+          options: true,
+        },
+        orderBy: {
+          id: "desc",
         },
       });
 
-      return res.status(200).json(PastEvents);
+      return res.status(200).json(pastEvents);
     } catch (error) {
       console.error("Error fetching past events:", error);
       return res.status(500).json({ message: "Internal Server Error" });

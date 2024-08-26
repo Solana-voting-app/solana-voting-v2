@@ -35,6 +35,7 @@ model VotingEvent {
   title        String
   startDate    DateTime
   endDate      DateTime
+  description  String?
   options      VotingOption[] @relation("EventOptions")
   invitedUsers String[]
   creatorId    Int

@@ -4,12 +4,15 @@ import { CardComponent } from "./Card";
 import { BACKEND_URL } from "@/utils";
 import axios from "axios";
 import { useWalletContext } from "@/contexts/WalletContext";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Event {
   id: number;
   title: string;
   invitedUsers: string[];
   startDate: string;
+  description: string;
   endDate: string;
   options: Array<{
     id: number;
@@ -21,6 +24,7 @@ interface Event {
 }
 
 const ActiveVote = () => {
+  const { toast } = useToast();
   const { publicKey } = useWalletContext();
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -38,6 +42,11 @@ const ActiveVote = () => {
         );
         setEvents(response.data);
       } catch (error) {
+        toast({
+          title: "Error fetching Active votes",
+          className: "border border-red-500",
+          action: <ToastAction altText="Close">Close</ToastAction>,
+        });
         console.error("Error fetching active events:", error);
       }
     };
@@ -54,7 +63,7 @@ const ActiveVote = () => {
             <CardComponent
               key={event.id}
               id={event.id}
-              description="Decentralized Autonomous Organization (DAO) Proposal"
+              description={event.description}
               title={event.title}
               categories={event.invitedUsers}
               participants={event.invitedUsers.length.toString()}

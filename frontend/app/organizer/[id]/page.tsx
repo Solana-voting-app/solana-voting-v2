@@ -75,12 +75,7 @@ const Component = () => {
               </div>
               <h1 className="text-3xl font-bold">{eventDetails.title}</h1>
               <div className="text-muted-foreground">
-                {/* <p>
-                  The community is considering a proposal to build a new
-                  community center in the downtown area. This center would
-                  provide a space for local events, classes, and gatherings. The
-                  voting will determine whether the project moves forward.
-                </p> */}
+                <p>{eventDetails.description}</p>
               </div>
             </div>
             <div className="my-8 border-t" />

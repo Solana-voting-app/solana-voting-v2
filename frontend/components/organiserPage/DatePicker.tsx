@@ -45,8 +45,8 @@ export function DatePickerDemo({
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date || undefined} // Ensure selected is either Date or undefined
-          onSelect={handleSelectDate} // Updated to accept Date | undefined
+          selected={date || undefined}
+          onSelect={handleSelectDate}
           initialFocus
         />
       </PopoverContent>

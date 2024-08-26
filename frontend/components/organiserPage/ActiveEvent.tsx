@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CardComponent } from "../voterPage/Card";
 import axios from "axios";
 import { BACKEND_URL } from "@/utils";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Event {
   id: number;
@@ -11,6 +13,7 @@ interface Event {
   invitedUsers: string[];
   startDate: string;
   endDate: string;
+  description: string;
   options: Array<{
     id: number;
     option: string;
@@ -21,6 +24,8 @@ interface Event {
 }
 
 const ActiveEvent = () => {
+  const { toast } = useToast();
+
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
@@ -37,6 +42,11 @@ const ActiveEvent = () => {
         );
         setEvents(response.data);
       } catch (error) {
+        toast({
+          title: "Error fetching active events",
+          className: "border border-red-500",
+          action: <ToastAction altText="Close">Close</ToastAction>,
+        });
         console.error("Error fetching active events:", error);
       }
     };
@@ -59,7 +69,7 @@ const ActiveEvent = () => {
             <CardComponent
               key={event.id}
               id={event.id}
-              description="Decentralized Autonomous Organization (DAO) Proposal"
+              description={event.description}
               title={event.title}
               categories={event.invitedUsers.map(
                 (user) => `${user.slice(0, 6)}...${user.slice(-4)}`
