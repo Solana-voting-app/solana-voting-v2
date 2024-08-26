@@ -13,24 +13,21 @@ const Hero = () => {
   return (
     <div>
       {!connected ? (
-        <div>
-          <section className="w-full pt-12 md:pt-20 lg:pt-30 border-b">
+        <div className="">
+          <section className="w-full  md:pt-20 lg:pt-10 border-b py-8 md:py-10 lg:py-10">
             <div className="container px-4 md:px-6 space-y-10 xl:space-y-16">
               <div className="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
                 <div>
                   <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
                     Secure and Transparent Voting
                   </h1>
-                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-3">
                     VoteChain empowers you to participate in decentralized
                     decision-making. Cast your vote and make your voice heard.
                   </p>
                   <div className="mt-6 flex flex-col sm:flex-row gap-4">
                     <WalletConnection />
                   </div>
-                </div>
-                <div className="flex flex-col items-center justify-center">
-                  {/* <Image></Image> */}
                 </div>
               </div>
             </div>
