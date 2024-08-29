@@ -103,10 +103,10 @@ export default function Component() {
             Our Mission
           </h2>
           <p className="text-xl text-center max-w-3xl mx-auto">
-            VoteChain's mission is to bring true decentralization to the voting
-            process. By empowering individuals to participate in elections
-            without intermediaries, we are paving the way for a future where
-            voting is transparent, secure, and accessible to all.
+            VoteChain&apos;s mission is to bring true decentralization to the
+            voting process. By empowering individuals to participate in
+            elections without intermediaries, we are paving the way for a future
+            where voting is transparent, secure, and accessible to all.
           </p>
         </section>
 
@@ -147,9 +147,9 @@ export default function Component() {
         <section className="text-center">
           <h2 className="text-3xl font-semibold mb-4">Join the Revolution</h2>
           <p className="mb-8 text-xl">
-            VoteChain is more than a voting system—it's a movement towards a
-            more secure, transparent, and trustworthy electoral process. Be part
-            of the future of voting by joining VoteChain today.
+            VoteChain is more than a voting system—it&apos;s a movement towards
+            a more secure, transparent, and trustworthy electoral process. Be
+            part of the future of voting by joining VoteChain today.
           </p>
           <Link href="/" prefetch={false}>
             <Button size="lg" className="text-lg px-8 py-6">

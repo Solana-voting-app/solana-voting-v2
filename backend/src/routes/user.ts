@@ -15,10 +15,6 @@ const router = Router();
 
 router.post("/signin", async (req, res) => {
   const { publicKey, signature } = req.body;
-  console.log(publicKey, signature);
-
-  // const publicKey = "0x14354";
-  // const signature = "";
   const message = new TextEncoder().encode("Sign into VoteChain");
 
   const result = nacl.sign.detached.verify(
