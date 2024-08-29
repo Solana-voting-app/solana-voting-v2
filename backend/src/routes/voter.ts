@@ -8,6 +8,21 @@ import { voteSchema } from "../types";
 
 const router = Router();
 
+interface Option {
+  id: number;
+  optionText: string;
+  voteCount: number;
+  votedUsers: number[];
+}
+
+interface VotingEvent {
+  id: number;
+  title: string;
+  description: string;
+  endDate: Date;
+  options: Option[];
+}
+
 // Get active votes (events that the user can vote on)
 router.get(
   "/getActiveVote",
@@ -57,6 +72,7 @@ router.get(
       const userId: string = req.userId!;
       //@ts-ignore
       const address: string = req.address;
+      //@ts-ignore
       const events = await prisma.votingEvent.findMany({
         where: {
           invitedUsers: {
