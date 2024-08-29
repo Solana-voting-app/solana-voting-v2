@@ -8,9 +8,10 @@ import { voteSchema } from "../types";
 
 const router = Router();
 
-interface Option {
+interface VotingOption {
   id: number;
-  optionText: string;
+  eventId: number;
+  option: string;
   voteCount: number;
   votedUsers: number[];
 }
@@ -18,9 +19,13 @@ interface Option {
 interface VotingEvent {
   id: number;
   title: string;
-  description: string;
+  startDate: Date;
   endDate: Date;
-  options: Option[];
+  description: string | null;
+  invitedUsers: string[];
+  creatorId: number;
+  isCompleted: boolean;
+  options: VotingOption;
 }
 
 // Get active votes (events that the user can vote on)
@@ -90,8 +95,8 @@ router.get(
         },
       });
 
-      const eventVotes = events.map((event) => {
-        const hasVoted = event.options.some((option) =>
+      const eventVotes = events.map((event: any) => {
+        const hasVoted = event.options.some((option: any) =>
           option.votedUsers.includes(Number(userId))
         );
 
