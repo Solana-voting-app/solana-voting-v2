@@ -67,7 +67,6 @@ export const verifyAddressMiddleware = async (
       });
     }
 
-    // Add the parsed address to the request object for later use
     //@ts-ignore
     req.address = address;
     next();
