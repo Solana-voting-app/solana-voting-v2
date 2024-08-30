@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull votechain-backend:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/votechain-backend:latest
             sudo docker stop votechain-backend || true
             sudo docker rm votechain-backend || true
-            sudo docker run -d --name votechain-backend -p 3001:3001 votechain-backend:latest
+            sudo docker run -d --name votechain-backend -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/votechain-backend:latest
