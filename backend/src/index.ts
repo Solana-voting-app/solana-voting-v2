@@ -14,5 +14,8 @@ dotenv.config();
 app.use("/v1/user", userRouter);
 app.use("/v1/event", eventRouter);
 app.use("/v1/voter", voterRouter);
+app.get("/", (req, res) => {
+  res.send("Votechain backend is up and running!");
+});
 
 app.listen(3001);
