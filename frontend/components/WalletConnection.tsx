@@ -46,25 +46,33 @@ const WalletConnection = () => {
 
   useEffect(() => {
     async function signAndSend() {
-      if (!publicKey) {
+      if (!publicKey || !signMessage) {
         return;
       }
-      const message = new TextEncoder().encode("Sign into VoteChain");
-      const signature = await signMessage?.(message);
-      console.log(signature);
-      console.log(publicKey);
-      const response = await axios.post(`${BACKEND_URL}/v1/user/signin`, {
-        signature,
-        publicKey: publicKey?.toString(),
-      });
 
-      console.log("token", response.data.token);
+      try {
+        const message = new TextEncoder().encode("Sign into VoteChain");
+        const signature = await signMessage(message);
+        console.log(signature);
+        console.log(publicKey);
 
-      localStorage.setItem("token", response.data.token);
+        const response = await axios.post(`${BACKEND_URL}/v1/user/signin`, {
+          signature,
+          publicKey: publicKey.toString(),
+        });
+
+        console.log("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("signedIn", "true");
+      } catch (error) {
+        console.error("Error signing message:", error);
+      }
     }
 
-    signAndSend();
-  }, [publicKey, signMessage]);
+    if (connected) {
+      signAndSend();
+    }
+  }, [publicKey, signMessage, connected]);
 
   const handleDisconnect = async () => {
     disconnectWallet();

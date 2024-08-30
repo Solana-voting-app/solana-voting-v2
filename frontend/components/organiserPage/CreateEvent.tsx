@@ -89,6 +89,7 @@ const CreateEvent = () => {
   const resetForm = () => {
     setFormState(initialState);
   };
+
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
@@ -121,7 +122,7 @@ const CreateEvent = () => {
         action: <ToastAction altText="Close">Close</ToastAction>,
       });
 
-      const uniqueLink = `http://localhost:3000/vote/${uuidv4()}`;
+      const uniqueLink = `http://VoteChain/vote/${uuidv4()}`;
       setShareableLink(uniqueLink);
 
       resetForm();
