@@ -18,4 +18,10 @@ app.get("/", (req, res) => {
   res.send("Votechain backend is up and running!");
 });
 
-app.listen(3001);
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(
+    `Votechain backend is up! Get it running at http://localhost:${PORT}`
+  );
+});
