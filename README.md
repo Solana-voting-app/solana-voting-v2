@@ -13,3 +13,10 @@ This project is designed to offer a secure, transparent, and scalable voting mec
 
 # Getting Started
 To run this project locally, follow below steps:
+- `clone the repo`
+- `npm install`
+- `cd ./backend && npm run dev`
+- `cd ./frontend && npm run dev`
+- `rustup --version && rustc --version && cargo --version`
+- `cd ./smart-contract && anchor build`
+  
